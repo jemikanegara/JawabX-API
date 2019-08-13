@@ -2,9 +2,8 @@ const models = require('./models')
 const checkOwnership = require('./checkOwnership')
 
 const updateFunction = async (model, { data }, { decoded }) => {
+    if (!decoded) throw Error("No Access")
     const { _id } = data
-    await checkOwnership(Module, _id, decoded._id)
-
     let dbModel
 
     for (let key in models) {
@@ -14,13 +13,15 @@ const updateFunction = async (model, { data }, { decoded }) => {
         }
     }
 
+    await checkOwnership(dbModel, _id, decoded._id)
+
     let oldData = await dbModel.findById(_id)
 
     for (let key in data) {
         if (oldData[key] !== data[key]) oldData[key] = data[key]
     }
 
-    newData = new Module(oldData)
+    newData = new dbModel(oldData)
     return await newData.save().then(res => res._id)
 }
 

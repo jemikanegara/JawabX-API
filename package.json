@@ -22,7 +22,10 @@
   "homepage": "https://github.com/jemikanegara/JawabX-API#readme",
   "dependencies": {
     "apollo-server": "^2.8.1",
+    "bcrypt": "^3.0.6",
+    "dotenv": "^8.0.0",
     "graphql": "^14.4.2",
+    "jsonwebtoken": "^8.5.1",
     "mongoose": "^5.6.9"
   }
 }

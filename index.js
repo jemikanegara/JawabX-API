@@ -1,10 +1,14 @@
+require('dotenv').config()
 const { ApolloServer } = require('apollo-server');
 const typeDefs = require('./GQL-TYPE');
 const Query = require('./GQL-QUERY')
 const Mutation = require('./GQL-MUTATION');
 const { connect } = require('mongoose')
+const { checkToken } = require('./FUNCTIONS/tokenFunction')
 
-connect('mongodb://localhost/jawabx', { useNewUrlParser: true });
+connect('mongodb://localhost/jawabx', { useNewUrlParser: true }).then(() => {
+  console.log("server connected")
+}).catch(err => console.log(err))
 
 const resolvers = {
   Query,
@@ -15,10 +19,8 @@ const server = new ApolloServer({
   typeDefs,
   resolvers,
   context: ({ req }) => ({
-    token: req.headers['Authorization'] || "",
-    decoded: {
-      _id: "5d4f14aa859f3f3a59637b0f"
-    }
+    token: req.headers.authorization ? req.headers.authorization.split(" ")[1] : "",
+    decoded: checkToken(req.headers.authorization)
   })
 });
 
