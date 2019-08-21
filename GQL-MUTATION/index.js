@@ -60,9 +60,6 @@ module.exports = {
         await modifyFunction(model, { data }, { decoded }),
 
     deletePage: async (_, { data }, { decoded }) => {
-        const deletedPage = await deleteFunction(Page, { data }, { decoded })
-        const deletedAnswer = deletedPage && await Answer.deleteMany({ _id: { $in: deletedPage.answers } })
-        const updatedModule = deletedAnswer && await modifyFunction(Module, { data: { _id: parent } }, { decoded })
-        return updatedModule ? true : (() => { throw Error("delete failed")() })
+        return await deleteFunction("pages", { data }, { decoded })
     }
 }

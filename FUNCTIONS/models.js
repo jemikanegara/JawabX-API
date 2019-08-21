@@ -18,7 +18,7 @@ const models = {
         dbModel: Page
     },
     answer: {
-        dbParent: Page,
+        dbParent: [Page],
         dbModel: Answer
     },
     tried: {

@@ -12,18 +12,13 @@ const topLevelFunction = async (level, _id, dbModel, model, dbParent) => {
         topLevelCount = 1
         // Remove Model Data
         const deletedData = await dbModel.findByIdAndDelete(_id, { new: false }).populate(model)
-        if (!deletedData) throw Error("delete data failed")
+        if (!deletedData) throw Error("delete model data failed")
 
-        // Update Parent Data
-        // Find Parent that contain model's ID
+        // Update Parents Data
         dbParent && dbParent.forEach(async dbParentModel => {
-            const dbParentData = await dbParentModel.find({ [model]: { $in: _id } })
-
-            // Update Parent if there is any parent
-            if (dbParentData) {
-                const updatedParent = await modifyFunction(dbParentModel, { data: { _id: dbParentData._id } }, { decoded })
-                if (!updatedParent) throw Error("update parent failed")
-            }
+            const dbParentData = await dbParentModel
+                .updateMany({ [model]: { $in: _id } }, { $pull: { [model]: { $in: _id } } })
+            if (!dbParentData) throw Error("delete parent data failed")
         })
 
         // Execute Batch Delete
