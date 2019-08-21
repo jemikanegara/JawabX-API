@@ -2,6 +2,7 @@ const createFunction = require('./createFunction')
 const updateFunction = require('./updateFunction')
 
 const modifyFunction = async (model, { data }, { decoded }) => {
+    if (!decoded) throw Error("No Access")
     const { _id } = data
 
     let dataId

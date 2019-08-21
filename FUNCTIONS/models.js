@@ -5,11 +5,26 @@ const Answer = require('../MONGO-SCHEMA/answer')
 const Tried = require('../MONGO-SCHEMA/tried')
 
 const models = {
-    user: User,
-    module: Module,
-    page: Page,
-    answer: Answer,
-    tried: Tried
+    user: {
+        dbParent: null,
+        dbModel: User
+    },
+    module: {
+        dbParent: null,
+        dbModel: Module
+    },
+    page: {
+        dbParent: [Module],
+        dbModel: Page
+    },
+    answer: {
+        dbParent: Page,
+        dbModel: Answer
+    },
+    tried: {
+        dbParent: null,
+        dbModel: Tried
+    }
 }
 
 module.exports = models

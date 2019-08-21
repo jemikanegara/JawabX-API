@@ -1,17 +1,9 @@
-const models = require('./models')
 const checkOwnership = require('./checkOwnership')
+const getModel = require('./getModel')
 
 const updateFunction = async (model, { data }, { decoded }) => {
-    if (!decoded) throw Error("No Access")
     const { _id } = data
-    let dbModel
-
-    for (let key in models) {
-        if (model.includes(key)) {
-            dbModel = models[key]
-            break
-        }
-    }
+    const { dbModel } = getModel(model)
 
     await checkOwnership(dbModel, _id, decoded._id)
 

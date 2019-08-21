@@ -1,15 +1,8 @@
-const models = require('./models')
+const getModel = require('./getModel')
 
 const createFunction = async (model, { data }, { decoded }) => {
-    let dbModel
     let newData = data
-
-    for (let key in models) {
-        if (model.includes(key)) {
-            dbModel = models[key]
-            break
-        }
-    }
+    const { dbModel } = getModel(model)
 
     for (let key in data) {
         if (Array.isArray(data[key])) {

@@ -49,12 +49,6 @@ module.exports = gql`
     module: [Module]
   }
 
-  type Query {
-    user(_id: ID): [User]
-    modules: [Module]
-    module(_id: ID): [Page]
-  }
-
   input AnswerMutation {
     _id: ID
     type: AnswerType
@@ -75,6 +69,13 @@ module.exports = gql`
     title: String
     description: String
     pages: [PageMutation]
+  }
+
+  type Query {
+    user(_id: ID): [User]
+    modules: [Module]
+    module(_id: ID): Module
+    page(_id: ID): [Answer]
   }
 
   type Mutation {

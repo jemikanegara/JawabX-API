@@ -1,5 +1,11 @@
 const models = require('../FUNCTIONS/models')
-const { user: User, module: Module, page: Page, answer: Answer, tried: Tried } = models
+const {
+    user: { dbModel: User },
+    module: { dbModel: Module },
+    page: { dbModel: Page },
+    answer: { dbModel: Answer },
+    tried: { dbModel: Tried }
+} = models
 const modifyFunction = require('../FUNCTIONS/modifyFunction')
 const deleteFunction = require('../FUNCTIONS/deleteFunction')
 const bcrypt = require('bcrypt')
@@ -47,12 +53,16 @@ module.exports = {
     modifyModule: async (model = "modules", { data }, { decoded }) =>
         await modifyFunction(model, { data }, { decoded }),
 
-    deleteModule: async (_, { data }, { decoded }) =>
-        await deleteFunction(Module, { data }, { decoded }),
-
+    deleteModule: async (_, { data }, { decoded }) => {
+        return await deleteFunction("modules", { data }, { decoded })
+    },
     modifyPage: async (model = "pages", { data }, { decoded }) =>
         await modifyFunction(model, { data }, { decoded }),
 
-    deletePage: async (_, { data }, { decoded }) =>
-        await deleteFunction(Page, { data }, { decoded })
+    deletePage: async (_, { data }, { decoded }) => {
+        const deletedPage = await deleteFunction(Page, { data }, { decoded })
+        const deletedAnswer = deletedPage && await Answer.deleteMany({ _id: { $in: deletedPage.answers } })
+        const updatedModule = deletedAnswer && await modifyFunction(Module, { data: { _id: parent } }, { decoded })
+        return updatedModule ? true : (() => { throw Error("delete failed")() })
+    }
 }

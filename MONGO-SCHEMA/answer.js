@@ -3,9 +3,10 @@ const { Schema, model } = require('mongoose')
 const Answer = new Schema({
     type: {
         type: String,
-        enum: ['JOURNAL', 'MULTI', 'SINGLE', 'WORD']
+        enum: ['JOURNAL', 'MULTI', 'SINGLE', 'WORD'],
+        required: true
     },
-    user: Schema.Types.ObjectId,
+    user: { type: Schema.Types.ObjectId, required: true },
     answer: {}
 })
 

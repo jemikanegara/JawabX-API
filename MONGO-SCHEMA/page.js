@@ -1,12 +1,13 @@
 const { Schema, model } = require('mongoose')
 
 const Page = new Schema({
-    explanation: String,
+    explanation: { type: String, required: true },
     type: {
         type: String,
-        enum: ['CONCEPT', 'PRACTICE']
+        enum: ['CONCEPT', 'PRACTICE'],
+        required: true
     },
-    user: Schema.Types.ObjectId,
+    user: { type: Schema.Types.ObjectId, required: true },
     answers: [{
         type: Schema.Types.ObjectId,
         ref: 'Answer'
