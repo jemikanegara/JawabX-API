@@ -32,10 +32,16 @@ module.exports = gql`
     TEST
   }
 
+  type Images {
+    small: String,
+    medium: String,
+    original: String
+  }
+
   type Module {
     _id: ID
     type: ModuleType
-    thumbnail: String
+    images: [Images]
     title: String
     description: String
     pages: [Page]
@@ -65,7 +71,7 @@ module.exports = gql`
   input ModuleMutation {
     _id: ID
     type: ModuleType
-    thumbnail: String
+    images: [Upload]
     title: String
     description: String
     pages: [PageMutation]

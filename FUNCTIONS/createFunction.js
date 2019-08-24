@@ -1,11 +1,15 @@
 const getModel = require('./getModel')
+const uploadImages = require('./uploadImages')
 
 const createFunction = async (model, { data }, { decoded }) => {
     let newData = data
     const { dbModel } = getModel(model)
+    const { images } = data
+
+    if (data.images) newData.images = await uploadImages(images)
 
     for (let key in data) {
-        if (Array.isArray(data[key])) {
+        if (Array.isArray(data[key]) && key !== 'images') {
             const keyArray = data[key].slice()
             const createdKey = await keyArray.map(async el => {
                 return await createFunction(key, { data: el }, { decoded })

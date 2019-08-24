@@ -1,6 +1,5 @@
 const checkOwnership = require('./checkOwnership')
 const getModel = require('./getModel')
-const modifyFunction = require('./modifyFunction')
 
 let globalChildrenToDelete = [] // expect  {parent : Model, children: [child_id]}
 let topLevelCount = 0
