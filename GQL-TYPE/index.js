@@ -39,12 +39,13 @@ module.exports = gql`
   }
 
   type Module {
-    _id: ID
+    _id: ID!
     type: ModuleType
     images: [Images]
-    title: String
-    description: String
+    title: String!
+    description: String!
     pages: [Page]
+    user: User!
   }
 
   type User {
