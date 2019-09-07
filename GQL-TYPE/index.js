@@ -50,6 +50,7 @@ module.exports = gql`
 
   type User {
     _id: ID
+    name: String
     username: String
     email: String
     phone: String
@@ -86,7 +87,7 @@ module.exports = gql`
   }
 
   type Mutation {
-    register(email: String, password: String, phone: String): String
+    register(email: String, password: String, phone: String, name: String): String
     login(email: String, password: String, phone: String): String
     modifyModule(data: ModuleMutation): ID
     deleteModule(data: ModuleMutation): Boolean

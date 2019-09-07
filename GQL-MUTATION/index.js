@@ -12,13 +12,15 @@ const bcrypt = require('bcrypt')
 const { generateToken } = require('../FUNCTIONS/tokenFunction')
 
 module.exports = {
-    register: async (_, { email, password, phone }) => {
+    register: async (_, { name, email, password, phone }) => {
         if (!email && !phone) throw Error("Must provide email or phone number")
         if (!password) throw Error("Invalid password format")
+        if (name && name === "") throw Error("Name cannot be empty")
 
         password = await bcrypt.hash(password, 10)
 
         const newUser = new User({
+            name,
             email,
             password,
             phone
