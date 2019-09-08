@@ -8,7 +8,10 @@ const generateToken = (payload) => {
 const checkToken = (token) => {
     if (!token) return false
     token = token.split(" ")[1]
-    const check = jwt.verify(token, secretKey)
+    const check = jwt.verify(token, secretKey, (err, decoded) => {
+        if (err) return null
+        else return decoded
+    })
     if (!check) return false
     else return check
 }

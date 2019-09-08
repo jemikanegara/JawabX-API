@@ -52,6 +52,11 @@ module.exports = {
         return generateToken({ _id: userData._id })
     },
 
+    auth: async (_, args, { decoded, token }) => {
+        if (decoded) return true
+        else return false
+    },
+
     modifyModule: async (model = "modules", { data }, { decoded }) =>
         await modifyFunction(model, { data }, { decoded }),
 
