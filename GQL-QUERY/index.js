@@ -6,7 +6,7 @@ const Page = require('../MONGO-SCHEMA/page')
 const Query = {
     user: async (_, { _id }, ctx) => await User.findById(_id).select('module').populate('module'),
     modules: async (_, args, ctx) => await Module.find().select('-pages').populate('user'),
-    module: async (_, { _id }, ctx) => await Module.findById(_id).populate({ path: 'pages', populate: { path: 'answers' } }),
+    module: async (_, { _id }, ctx) => await Module.findById(_id).populate('user').populate({ path: 'pages', populate: { path: 'answers' } }),
     page: async (_, { _id }, ctx) => await Page.findById(_id).populate('answers')
 }
 

@@ -1,8 +1,8 @@
 {
-    "editor.wordWrap": "on",
-    "files.exclude": {
-        "node_modules": true,
-        ".vscode": true
-    },
-    "editor.formatOnSave": true,
+  "editor.wordWrap": "on",
+  "files.exclude": {
+    "node_modules": true,
+    ".vscode": true
+  },
+  "editor.formatOnSave": true
 }

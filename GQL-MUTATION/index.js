@@ -26,6 +26,8 @@ module.exports = {
             phone
         })
 
+        console.log(newUser)
+
         const _id = await newUser.save().then(res => res.id)
         if (!_id) throw Error("Not found")
 

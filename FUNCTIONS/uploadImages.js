@@ -22,6 +22,7 @@ const resizeDimension = [
 ]
 
 const uploadImages = async (images) => {
+    console.log(images)
     // Images Processing & Upload
     const resizedImages = await images.map(async image => {
         // Resize
