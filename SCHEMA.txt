@@ -1,0 +1,37 @@
+jurnal : 
+
+{
+    account
+    debit
+    credit
+}
+
+multi : 
+
+{
+    options: {
+        '1': 'Modal',
+        '2': 'Utang',
+        '3': 'Kas',
+        '4': 'Piutang'
+    },
+    trueAnswer: ['1', '2']
+}
+
+single :
+
+{
+    options: {
+        '1': 'Modal',
+        '2': 'Utang',
+        '3': 'Kas',
+        '4': 'Piutang'
+    },
+    trueAnswer: ['1']
+}
+
+word : 
+
+{
+    trueAnswer: ''
+}

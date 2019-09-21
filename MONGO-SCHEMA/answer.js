@@ -1,41 +1,83 @@
 const { Schema, model } = require('mongoose')
 
+// Journal Entry
+const Entry = new Schema({
+    debit: { type: Number, required: true },
+    credit: { type: Number, required: true }
+})
+
+// Jornal
+const Journal = new Schema({
+    accounts: [String],
+    trueAnswer: { type: Map, of: Entry, required: true }
+})
+
+Journal.pre('save', function (next) {
+    this.accounts = []
+    let debit = 0
+    let credit = 0
+    for (let [key, value] of this.trueAnswer) {
+        this.accounts.push(key)
+        debit = debit + value.debit
+        credit = credit + value.credit
+    }
+
+    if (debit !== credit) throw Error("DEBIT & CREDIT should balance")
+    next()
+})
+
+// Choice
+const Choice = new Schema({
+    options: [String],
+    trueAnswer: { type: Map, of: Boolean, required: true }
+})
+
+Choice.pre('save', function (next) {
+    const parent = this.parent()
+    const { single } = parent
+    let trueTotal = 0
+
+    this.options = []
+    for (let [key, value] of this.trueAnswer) {
+        this.options.push(key)
+        if (value) trueTotal++
+    }
+
+    if (single && trueTotal > 1) {
+        throw Error("SINGLE cannot have more than one true answer")
+    }
+
+    next()
+})
+
 const Answer = new Schema({
-    type: {
-        type: String,
-        enum: ['JOURNAL', 'MULTI', 'SINGLE', 'WORD'],
-        required: true
-    },
     user: { type: Schema.Types.ObjectId, required: true },
-    answer: {}
+    journal: Journal,
+    multi: Choice,
+    single: Choice,
+    word: String
+})
+
+Answer.pre('validate', function (next) {
+    const answerType = ['journal', 'multi', 'single', 'word']
+    let totalAnswer = 0
+
+    answerType.forEach(type => {
+        console.log(this[type])
+        if (this[type]) totalAnswer++
+    })
+
+    console.log(totalAnswer)
+    if (totalAnswer !== 1) throw Error("ANSWER can only have one type")
+
+    next()
 })
 
 Answer.pre('save', function (next) {
-
-    // Check for null
-    if (!Array.isArray(this.answer) || this.answer.length < 1) throw Error("Answer cannot be empty")
-
-    // Check for multiple answer for single and word type
-    if (this.type === "SINGLE" || this.type === "WORD" && this.answer.length > 1) throw Error(`${this.type} cannot have more than one answer`)
-
-    // Check for value inside answer
-    this.answer.forEach(({ debit, credit, account, value }) => {
-
-        // Journal Type must have 3 field
-        // DEBIT, CREDIT, ACCOUNT
-        if (this.type === "JOURNAL") {
-            if (!debit || !credit || !account) {
-                throw Error("Journal must have account, debit and credit value")
-            }
-
-            if (typeof debit !== 'number' || typeof credit !== 'number') throw Error("Debit and credit should be a number")
-        }
-        // Non Journal Type must have 'value' field
-        else {
-            if (!value) throw Error("Answer should have 'value' field")
-        }
-    })
-
+    const { journal, multi, single, word } = this
+    if (!journal && !multi && !single && !word) {
+        throw Error("Answer cannot be null")
+    }
     next()
 })
 

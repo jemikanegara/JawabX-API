@@ -3,17 +3,22 @@ const { gql } = require('apollo-server');
 module.exports = gql`
   scalar JSON
 
-  enum AnswerType {
-    JOURNAL,
-    MULTI,
-    SINGLE,
-    WORD
+  type Journal {
+    accounts: [String]
+    trueAnswer: JSON
+  }
+
+  type Choice {
+    options: [String]
+    trueAnswer: JSON
   }
 
   type Answer {
     _id: ID
-    type: AnswerType
-    answer: JSON
+    journal: Journal
+    multi: Choice
+    single: Choice
+    word: String
   }
 
   enum PageType {
@@ -23,20 +28,20 @@ module.exports = gql`
 
   type Page {
     _id: ID
-    explanation: String,
-    type: PageType,
+    explanation: String
+    type: PageType
     answers: [Answer]
   }
 
   enum ModuleType {
-    LEARN,
-    EXERCISE,
+    LEARN
+    EXERCISE
     TEST
   }
 
   type Images {
-    small: String,
-    medium: String,
+    small: String
+    medium: String
     original: String
   }
 
@@ -61,14 +66,16 @@ module.exports = gql`
 
   input AnswerMutation {
     _id: ID
-    type: AnswerType
-    answer: JSON
+    journal: JSON
+    multi: JSON
+    single: JSON
+    word: String
   }
 
   input PageMutation {
     _id: ID
-    explanation: String,
-    type: PageType,
+    explanation: String
+    type: PageType
     answers: [AnswerMutation]
   }
 

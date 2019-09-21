@@ -7,13 +7,19 @@ const createFunction = async (model, { data }, { decoded }) => {
     const { images } = data
 
     for (let key in data) {
-        if (Array.isArray(data[key]) && key !== 'images' && key !== 'answer') {
+        if (Array.isArray(data[key]) && key !== 'images') {
             const keyArray = data[key].slice()
             const createdKey = await keyArray.map(async el => {
                 return await createFunction(key, { data: el }, { decoded })
             })
             const resolvedKey = await Promise.all(createdKey)
             newData[key] = resolvedKey
+        }
+
+        if (model === 'answers') {
+            if (key === 'journal' || key === 'multi' || key === 'single') {
+                data[key].trueAnswer = new Map(Object.entries(data[key].trueAnswer))
+            }
         }
     }
 
