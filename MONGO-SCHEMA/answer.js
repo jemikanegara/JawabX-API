@@ -28,7 +28,7 @@ Answer.pre('save', function (next) {
                 throw Error("Journal must have account, debit and credit value")
             }
 
-            if (isNaN(debit) || isNaN(credit)) throw Error("Debit and credit should be a number")
+            if (typeof debit !== 'number' || typeof credit !== 'number') throw Error("Debit and credit should be a number")
         }
         // Non Journal Type must have 'value' field
         else {
