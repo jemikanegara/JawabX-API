@@ -6,10 +6,8 @@ const createFunction = async (model, { data }, { decoded }) => {
     const { dbModel } = getModel(model)
     const { images } = data
 
-    if (data.images) newData.images = await uploadImages(images)
-
     for (let key in data) {
-        if (Array.isArray(data[key]) && key !== 'images') {
+        if (Array.isArray(data[key]) && key !== 'images' && key !== 'answer') {
             const keyArray = data[key].slice()
             const createdKey = await keyArray.map(async el => {
                 return await createFunction(key, { data: el }, { decoded })
@@ -18,6 +16,8 @@ const createFunction = async (model, { data }, { decoded }) => {
             newData[key] = resolvedKey
         }
     }
+
+    if (data.images) newData.images = await uploadImages(images)
 
     const newModel = await new dbModel({ ...newData, user: decoded._id })
     return await newModel.save().then(res => res._id)

@@ -1,6 +1,8 @@
 const { gql } = require('apollo-server');
 
 module.exports = gql`
+  scalar JSON
+
   enum AnswerType {
     JOURNAL,
     MULTI,
@@ -11,7 +13,7 @@ module.exports = gql`
   type Answer {
     _id: ID
     type: AnswerType
-    answer: String
+    answer: JSON
   }
 
   enum PageType {
@@ -60,7 +62,7 @@ module.exports = gql`
   input AnswerMutation {
     _id: ID
     type: AnswerType
-    answer: String
+    answer: JSON
   }
 
   input PageMutation {

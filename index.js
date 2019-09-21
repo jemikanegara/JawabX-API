@@ -5,6 +5,8 @@ const Query = require('./GQL-QUERY')
 const Mutation = require('./GQL-MUTATION');
 const { connect, set } = require('mongoose')
 const { checkToken } = require('./FUNCTIONS/tokenFunction')
+const { GraphQLJSON } = require('graphql-type-json');
+
 
 connect('mongodb://localhost/jawabx', { useNewUrlParser: true })
   .then(() => console.log("database connected"))
@@ -14,7 +16,8 @@ set('useCreateIndex', true)
 
 const resolvers = {
   Query,
-  Mutation
+  Mutation,
+  JSON: GraphQLJSON
 };
 
 const server = new ApolloServer({
