@@ -57,23 +57,20 @@ module.exports = {
     update: async (_, args, { decoded, token }) => {
         const { name, email, password, newPass, phone } = args
         if (!decoded._id) throw Error("No Access (TOKEN)")
-        const userData = await User.findById(decoded._id)
+        let userData = await User.findById(decoded._id).lean()
         if (!userData) throw Error("No Access (ID)")
         const passwordCheck = await bcrypt.compare(password, userData.password)
         if (!passwordCheck) throw Error("No Access (PASS)")
 
-        console.log(userData)
-
-        for (let key in userData) {
-            if (key !== "password" && args[key]) {
-                if (userData[key] !== args[key]) userData[key] = args[key]
-            }
+        let user = { ...userData, ...args }
+        if (newPass) {
+            user.password = await bcrypt.hash(newPass, 10)
+            delete user.newPass // Remove plain password
         }
 
-        if (newPass) userData.password = await bcrypt.hash(newPass, 10)
-
-        console.log(userData)
-        const _id = await userData.save().then(res => res.id)
+        const userUpdate = new User(user)
+        userUpdate.isNew = false
+        const _id = await userUpdate.save().then(res => res.id)
         if (!_id) throw Error("Not found")
 
         return generateToken({ _id: userData._id })
