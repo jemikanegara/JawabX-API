@@ -92,7 +92,8 @@ module.exports = gql`
     user(_id: ID): [User]
     modules: [Module]
     module(_id: ID): Module
-    page(_id: ID): [Answer]
+    page(_id: ID): Page
+    solution(_id: ID): Answer
   }
 
   type Mutation {
