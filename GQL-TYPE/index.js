@@ -4,6 +4,7 @@ module.exports = gql`
   scalar JSON
 
   type Journal {
+    # Type of Journal
     accounts: [String]
     trueAnswer: JSON
   }
@@ -90,7 +91,7 @@ module.exports = gql`
 
   type Query {
     user(_id: ID): [User]
-    modules: [Module]
+    modules(user: ID, text: String, type: ModuleType, lastModuleIndex: ID): [Module]
     module(_id: ID): Module
     page(_id: ID): Page
     solution(_id: ID): Answer
@@ -99,6 +100,7 @@ module.exports = gql`
   type Mutation {
     register(email: String, password: String, phone: String, name: String): String
     login(email: String!, password: String!, phone: String): String
+    update(email: String, password: String, newPass: String, phone: String, name: String): String
     auth: Boolean
     modifyModule(data: ModuleMutation): ID
     deleteModule(data: ModuleMutation): Boolean

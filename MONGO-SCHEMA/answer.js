@@ -63,11 +63,9 @@ Answer.pre('validate', function (next) {
     let totalAnswer = 0
 
     answerType.forEach(type => {
-        console.log(this[type])
         if (this[type]) totalAnswer++
     })
 
-    console.log(totalAnswer)
     if (totalAnswer !== 1) throw Error("ANSWER can only have one type")
 
     next()
