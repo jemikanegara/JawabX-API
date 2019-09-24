@@ -94,5 +94,8 @@ module.exports = {
         await deleteFunction("pages", { data }, { decoded }),
 
     modifyAnswer: async (model = "answers", { data }, { decoded }) =>
-        await modifyFunction(model, { data }, { decoded })
+        await modifyFunction(model, { data }, { decoded }),
+
+    deleteAnswer: async (_, { data }, { decoded }) =>
+        await deleteFunction("answers", { data }, { decoded })
 }

@@ -106,5 +106,7 @@ module.exports = gql`
     deleteModule(data: ModuleMutation): Boolean
     modifyPage(data: PageMutation): ID
     deletePage(data: PageMutation): Boolean
+    modifyAnswer(data: AnswerMutation): ID
+    deleteAnswer(data: AnswerMutation): Boolean
   }
 `;
