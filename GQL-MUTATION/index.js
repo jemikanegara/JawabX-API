@@ -84,13 +84,15 @@ module.exports = {
     modifyModule: async (model = "modules", { data }, { decoded }) =>
         await modifyFunction(model, { data }, { decoded }),
 
-    deleteModule: async (_, { data }, { decoded }) => {
-        return await deleteFunction("modules", { data }, { decoded })
-    },
+    deleteModule: async (_, { data }, { decoded }) =>
+        await deleteFunction("modules", { data }, { decoded }),
+
     modifyPage: async (model = "pages", { data }, { decoded }) =>
         await modifyFunction(model, { data }, { decoded }),
 
-    deletePage: async (_, { data }, { decoded }) => {
-        return await deleteFunction("pages", { data }, { decoded })
-    }
+    deletePage: async (_, { data }, { decoded }) =>
+        await deleteFunction("pages", { data }, { decoded }),
+
+    modifyAnswer: async (model = "answers", { data }, { decoded }) =>
+        await modifyFunction(model, { data }, { decoded })
 }
