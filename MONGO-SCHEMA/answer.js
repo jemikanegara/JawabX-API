@@ -51,11 +51,15 @@ Choice.pre('save', function (next) {
 })
 
 const Answer = new Schema({
-    user: { type: Schema.Types.ObjectId, required: true },
+    user: { type: Schema.Types.ObjectId, required: true, ref: 'User' },
     journal: Journal,
     multi: Choice,
     single: Choice,
-    word: String
+    word: String,
+    parent: {
+        type: Schema.Types.ObjectId,
+        ref: "Page"
+    }
 })
 
 Answer.pre('validate', function (next) {
@@ -78,5 +82,12 @@ Answer.pre('save', function (next) {
     }
     next()
 })
+
+// Answer.post('save', async function (doc) {
+//     const parent = await Page.findById(doc.parent)
+//     parent.pages.push(doc._id)
+//     const savedParent = await parent.save()
+//     console.log(savedParent)
+// })
 
 module.exports = model('Answer', Answer)
