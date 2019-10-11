@@ -3,8 +3,8 @@ const { gql } = require('apollo-server');
 module.exports = gql`
   scalar JSON
 
+# CHILD OUTPUT
   type Journal {
-    # Type of Journal
     accounts: [String]
     trueAnswer: JSON
   }
@@ -14,6 +14,8 @@ module.exports = gql`
     trueAnswer: JSON
   }
 
+# MAIN OUTPUT
+  # ANSWER
   type Answer {
     _id: ID
     journal: Journal
@@ -22,6 +24,7 @@ module.exports = gql`
     word: String
   }
 
+  # PAGE
   enum PageType {
     CONCEPT,
     PRACTICE
@@ -34,6 +37,7 @@ module.exports = gql`
     answers: [Answer]
   }
 
+  # MODULE
   enum ModuleType {
     LEARN
     EXERCISE
@@ -56,6 +60,7 @@ module.exports = gql`
     user: User!
   }
 
+  # USER
   type User {
     _id: ID
     name: String
@@ -65,12 +70,20 @@ module.exports = gql`
     module: [Module]
   }
 
+# CHILD INPUT
+  input ParentMutation {
+    _id: ID!
+    order: Int!
+  }
+
+# MAIN INPUT
   input AnswerMutation {
     _id: ID
     journal: JSON
     multi: JSON
     single: JSON
-    word: String
+    word: String,
+    parent: ParentMutation
   }
 
   input PageMutation {
@@ -78,6 +91,7 @@ module.exports = gql`
     explanation: String
     type: PageType
     answers: [AnswerMutation]
+    parent: ParentMutation
   }
 
   input ModuleMutation {
@@ -90,22 +104,36 @@ module.exports = gql`
   }
 
   type Query {
+    # USER
     user(_id: ID): [User]
+
+    # MODULE
     modules(user: ID, text: String, type: ModuleType, lastModuleIndex: ID): [Module]
     module(_id: ID): Module
+
+    # PAGE
     page(_id: ID): Page
+
+    # SOLUTION
     solution(_id: ID): Answer
   }
 
   type Mutation {
+    # AUTH
     register(email: String, password: String, phone: String, name: String): String
     login(email: String!, password: String!, phone: String): String
     update(email: String, password: String, newPass: String, phone: String, name: String): String
     auth: Boolean
+
+    # MODULE
     modifyModule(data: ModuleMutation): ID
     deleteModule(data: ModuleMutation): Boolean
+
+    # PAGE
     modifyPage(data: PageMutation): ID
     deletePage(data: PageMutation): Boolean
+
+    # ANSWER
     modifyAnswer(data: AnswerMutation): ID
     deleteAnswer(data: AnswerMutation): Boolean
   }

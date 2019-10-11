@@ -50,6 +50,7 @@ Choice.pre('save', function (next) {
     next()
 })
 
+// Answer
 const Answer = new Schema({
     user: { type: Schema.Types.ObjectId, required: true, ref: 'User' },
     journal: Journal,
@@ -82,12 +83,5 @@ Answer.pre('save', function (next) {
     }
     next()
 })
-
-// Answer.post('save', async function (doc) {
-//     const parent = await Page.findById(doc.parent)
-//     parent.pages.push(doc._id)
-//     const savedParent = await parent.save()
-//     console.log(savedParent)
-// })
 
 module.exports = model('Answer', Answer)
