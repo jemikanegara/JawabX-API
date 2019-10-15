@@ -50,7 +50,10 @@ const Query = {
             .findById(_id)
             .populate('user')
             .populate({
-                path: 'pages', populate: { path: 'answers' }
+                path: 'pages', populate: {
+                    path: 'answers',
+                    select: `-journal.trueAnswer -single.trueAnswer -multi.trueAnswer -word`
+                }
             }),
 
     // Single Page - DONE
@@ -59,7 +62,7 @@ const Query = {
             .findById(_id)
             .populate({
                 path: 'answers',
-                select: `-journal.trueAnswer -single.trueAnswer -multi.trueAnswer ${select ? select : ""}`
+                select: `-journal.trueAnswer -single.trueAnswer -multi.trueAnswer -word ${select ? select : ""}`
             }),
 
     // Reveal Solution - DONE
