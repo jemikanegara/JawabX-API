@@ -8,6 +8,9 @@ const Query = {
     // Single User - PROTOTYPE
     user: async (_, { _id }, ctx) => await User.findById(_id).select('module').populate('module'),
 
+    // Account
+    account: async (_, args, { decoded }) => await User.findById(decoded._id).select('-password -module'),
+
     // Multiple Modules - DONE
     modules: async (_, { user, text, type, lastModuleIndex }, ctx) => {
 

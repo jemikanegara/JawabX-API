@@ -107,6 +107,9 @@ module.exports = gql`
     # USER
     user(_id: ID): [User]
 
+    #ACCOUNT
+    account: User
+
     # MODULE
     modules(user: ID, text: String, type: ModuleType, lastModuleIndex: ID): [Module]
     module(_id: ID): Module
