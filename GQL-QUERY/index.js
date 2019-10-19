@@ -11,6 +11,23 @@ const Query = {
     // Account
     account: async (_, args, { decoded }) => await User.findById(decoded._id).select('-password -module'),
 
+    accountCheck: async (_, args, { decoded }) => {
+        if (!decoded._id) throw Error("No access")
+
+        let conditions = []
+
+        for (let key in args) {
+            if (args[key]) conditions.push({ [key]: args[key] })
+        }
+
+        const check = await User.findOne({
+            $or: conditions
+        }).select('-password -module')
+
+        if (check) return false
+        else return true
+    },
+
     // Multiple Modules - DONE
     modules: async (_, { user, text, type, lastModuleIndex }, ctx) => {
 

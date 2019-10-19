@@ -109,6 +109,7 @@ module.exports = gql`
 
     #ACCOUNT
     account: User
+    accountCheck(email: String, phone: String, username: String): Boolean
 
     # MODULE
     modules(user: ID, text: String, type: ModuleType, lastModuleIndex: ID): [Module]
@@ -125,7 +126,7 @@ module.exports = gql`
     # AUTH
     register(email: String, password: String, phone: String, name: String): String
     login(email: String!, password: String!, phone: String): String
-    update(email: String, password: String, newPass: String, phone: String, name: String): String
+    update(email: String, password: String, newPass: String, phone: String, name: String, username: String): String
     auth: Boolean
 
     # MODULE

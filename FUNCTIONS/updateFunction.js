@@ -10,7 +10,7 @@ const updateFunction = async (model, { data }, { decoded }) => {
     let oldData = await dbModel.findById(_id)
 
     for (let key in data) {
-        if (oldData[key] !== data[key]) oldData[key] = data[key]
+        if (data[key] && oldData[key] !== data[key]) oldData[key] = data[key]
     }
 
     newData = new dbModel(oldData)
