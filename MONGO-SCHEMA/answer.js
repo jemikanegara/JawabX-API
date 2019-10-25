@@ -50,12 +50,17 @@ Choice.pre('save', function (next) {
     next()
 })
 
+// Answer
 const Answer = new Schema({
-    user: { type: Schema.Types.ObjectId, required: true },
+    user: { type: Schema.Types.ObjectId, required: true, ref: 'User' },
     journal: Journal,
     multi: Choice,
     single: Choice,
-    word: String
+    word: String,
+    parent: {
+        type: Schema.Types.ObjectId,
+        ref: "Page"
+    }
 })
 
 Answer.pre('validate', function (next) {
