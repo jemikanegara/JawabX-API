@@ -55,7 +55,7 @@ module.exports = {
     },
 
     update: async (_, args, { decoded, token }) => {
-        const { name, email, password, newPass, phone } = args
+        const { username, email, password, newPass, phone } = args
         if (!decoded._id) throw Error("No Access (TOKEN)")
         let userData = await User.findById(decoded._id).lean()
         if (!userData) throw Error("No Access (ID)")
@@ -66,6 +66,8 @@ module.exports = {
         if (newPass) {
             user.password = await bcrypt.hash(newPass, 10)
             delete user.newPass // Remove plain password
+        } else {
+            user.password = userData.password
         }
 
         const userUpdate = new User(user)
